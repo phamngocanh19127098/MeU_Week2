@@ -23,6 +23,8 @@ CREATE TABLE user_roles(
 	  REFERENCES users(user_id)
 
 );
+-- DROP TABLE user_roles;
+-- DROP TABLE users;
 -- Test data
 SELECT * FROM users;
 -- select * from users, user_roles where users.id = user_roles.id;
