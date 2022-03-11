@@ -24,7 +24,7 @@ router.post('/register',async (req,res)=>{
         const newUser = await userModel.addNewUser(req.body);
         console.log(newUser);
         const data = {
-            from: 'MeU Solution HCMUS@fit.com',
+            from: 'Anh Pham HCMUS@fit.com',
             to: newUser.user_email,
             subject: 'Comfirm your mail',
             text: 'From MeU solutions \n'
@@ -37,5 +37,30 @@ router.post('/register',async (req,res)=>{
          console.log(error.message);
         res.status(500).json({error : error.message}) 
     }
+})
+
+router.get('/verify/:user_id',async (req,res)=>{
+    const user_id = req.params.user_id||-1;
+    console.log(user_id);
+    try {
+        if(user_id===-1){
+            return res.json({message:"Invalid url"});
+        }
+        
+        const user = await  userModel.findUserById(user_id);
+        console.log(user[0].user_verified);
+        if(user.length===0){
+            return res.json({message:"User does not exist"});
+        } else  if (user[0].user_verified==='0'){
+            
+            const setUser = await userModel.activeUser(user_id);
+            return res.json({message:'Verify Success'});
+        }
+        else 
+            return res.json({message:'This account is verified'});
+    } catch (error) {
+        res.status(404).json({message:'Invalid id'})
+    }
+    
 })
 export default router;

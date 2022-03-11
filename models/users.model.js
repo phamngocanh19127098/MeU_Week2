@@ -22,5 +22,14 @@ export default {
     async findUserByEmail(email){
         const users = await pool.query('SELECT * FROM users WHERE user_email =$1',  [email]);
         return users;
-    }
+    },
+    async findUserById(user_id){
+        const user = await pool.query('SELECT * FROM users,user_roles WHERE' 
+        +' users.user_id = user_roles.user_id AND users.user_id = $1',[user_id]);
+        return user.rows;
+    },
+     async activeUser (user_id){
+         const user = await pool.query('UPDATE users SET user_verified = $1 WHERE user_id = $2 ',['1',user_id]);
+        return user.rows;
+     }
 }
