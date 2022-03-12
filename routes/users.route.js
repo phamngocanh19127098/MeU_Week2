@@ -19,9 +19,10 @@ router.get('/', authenticateToken, async (req,res)=>{
 });
 
 router.post('/register',async (req,res)=>{
-   
+  
     try {
-        const newUser = await userModel.addNewUser(req.body);
+        const user = req.body;
+        const newUser = await userModel.addNewUser(user);
         console.log(newUser);
         const data = {
             from: 'Anh Pham HCMUS@fit.com',
@@ -32,7 +33,7 @@ router.post('/register',async (req,res)=>{
                     +'\n Thank for your joining'
           };    
         mailgun.messages().send(data);
-        res.json(newUser);
+        res.json({message:"Please comfirm your mail"});
     } catch (error) {
          console.log(error.message);
         res.status(500).json({error : error.message}) 
