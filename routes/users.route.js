@@ -10,7 +10,10 @@ const hashedApi = '87188d3dedb0558b49e8baa28b414ee3175caac3e27f94bd73b5fdb0f0651
 const mailgun = mailGun({apiKey:crypt.decrypt(hashedApi),domain:crypt.decrypt(hashedDomain)});
 router.get('/', authenticateToken, async (req,res)=>{
     try {
-        const users= await userModel.findAllUser();
+        const page = req.query.page||1;
+        const size = req.query.size||5;
+        const offset = (page-1)*size;
+        const users= await userModel.findAllUser(size,offset);
         return res.json({users: users.rows});
     } catch (error) {
         res.status(500).json({error : error.message})

@@ -15,8 +15,8 @@ export default {
         return newUser.rows[0];
     },
 
-    async findAllUser(user){
-        const users = await pool.query('SELECT * FROM users');
+    async findAllUser(size,offset){
+        const users = await pool.query('SELECT * FROM users LIMIT $1 OFFSET $2',[size,offset]);
         return users;
     },
     async findUserByEmail(email){

@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import userRoute from './routes/users.route.js'
 import authRoute from './routes/auth.route.js'
 import morgan from 'morgan';
-import cors from 'cors'
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 
@@ -56,7 +55,7 @@ const swaggerOptions = {
 
   /**
  * @swagger
- * /api/users:
+ * /api/users?page=2&size=5:
  *   get:  
  *     description: Get all users
  *     parameters:

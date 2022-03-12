@@ -29,9 +29,13 @@ CREATE TABLE user_roles(
 SELECT * FROM users;
 -- select * from users, user_roles where users.id = user_roles.id;
 -- Insert data
-INSERT INTO users (user_name,user_email,user_password) VALUES('Anh','anh@gmail.com','Anh'); 
+INSERT INTO users (user_name,user_email,user_password) VALUES('A','nguyenvanA@gmail.com','123'); 
+INSERT INTO users (user_name,user_email,user_password) VALUES('B','nguyenvanB@gmail.com','123'); 
+INSERT INTO users (user_name,user_email,user_password) VALUES('C','nguyenvanC@gmail.com','123'); 
+INSERT INTO users (user_name,user_email,user_password) VALUES('D','nguyenvanD@gmail.com','123'); 
+INSERT INTO users (user_name,user_email,user_password) VALUES('E','nguyenvanE@gmail.com','123'); 
+INSERT INTO users (user_name,user_email,user_password) VALUES('F','nguyenvanF@gmail.com','123'); 
+
 INSERT INTO user_roles(user_role) VALUES('admin');
 --psql -U postgre
 
---\c MeUWeek2_database
---\dt
