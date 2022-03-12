@@ -23,10 +23,10 @@ const swaggerOptions = {
     swaggerDefinition: {
       info: {
         version: "1.0.0",
-        title: "Customer API",
-        description: "Customer API Information",
+        title: "Test API",
+        description: "User API Information",
         contact: {
-          name: "Amazing Developer"
+          name: "Anh Pham"
         },
         servers: ["http://localhost:3000"]
       },
@@ -61,13 +61,16 @@ const swaggerOptions = {
  *     parameters:
  *       - in: header
  *         name: Authorization
+ *         default: Bearer + your token
  *         schema:
  *           type: string
  *           format: uuid
  *         required: true
  *     responses:
  *       200:
- *         description: Success
+ *         description: Get all users success
+ *       403: 
+ *         description: Invalid JWT
  * 
  */   
 
@@ -91,13 +94,18 @@ const swaggerOptions = {
  *            properties:
  *              name:
  *                 type: string
+ *                 default: Anh
  *              email:
  *                 type: string
+ *                 default: npham4533@gmail.com
  *              password:
  *                 type: string
+ *                 default: 123
  *     responses:
  *       200:
- *         description: Success
+ *         description: Send mail success
+ *       500:
+ *         description:  Internal Server Error
  *    
  */  
 
@@ -116,11 +124,15 @@ const swaggerOptions = {
  *            properties:
  *              email:
  *                 type: string
+ *                 default: npham4533@gmail.com
  *              password:
- *                 type: string    
+ *                 type: string
+ *                 default: 123    
  *     responses:
- *       201:
- *         description: Success
+ *       200:
+ *         description: Login success
+ *       401:
+ *         description: Email or password is incorrect
  */
 
 
@@ -137,8 +149,10 @@ const swaggerOptions = {
  *            type : string
  *            format: uuid
  *     responses:
- *       201:
+ *       200:
  *         description: Success
+ *       401:
+ *         description: Invalid id
  */
 
 
