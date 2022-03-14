@@ -35,7 +35,5 @@ INSERT INTO users (user_name,user_email,user_password) VALUES('C','nguyenvanC@gm
 INSERT INTO users (user_name,user_email,user_password) VALUES('D','nguyenvanD@gmail.com','123'); 
 INSERT INTO users (user_name,user_email,user_password) VALUES('E','nguyenvanE@gmail.com','123'); 
 INSERT INTO users (user_name,user_email,user_password) VALUES('F','nguyenvanF@gmail.com','123'); 
-
-INSERT INTO user_roles(user_role) VALUES('admin');
 --psql -U postgre
 
