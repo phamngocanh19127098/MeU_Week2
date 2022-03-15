@@ -33,7 +33,7 @@ router.post('/register',async (req,res)=>{
             await userModel.addNewRole(newUser[0].id,'Normal')
             const data = {
                 from: 'Anh Pham HCMUS@fit.com',
-                to: 'npham4533@gmail.com',
+                to: newUser[0].email,
                 subject: 'Comfirm your mail',
                 text: 'From MeU solutions \n'
                         +`Verify your mail here http://localhost:3000/api/users/verify/${newUser[0].id}`
