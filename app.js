@@ -9,11 +9,14 @@ import morgan from 'morgan';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 
+import Users from './models/generate.model.js';
+import usersModel from './models/users.model.js';
 
 const app = express();
 app.use(express.json())
 app.use(morgan('dev'));
 dotenv.config();
+
 app.use('/api/users',userRoute);
 app.use('/api/auth',authRoute);
 
@@ -21,50 +24,58 @@ app.use('/api/auth',authRoute);
 // Swagger
 const swaggerOptions = {
     swaggerDefinition: {
+      
       info: {
         version: "1.0.0",
+        
         title: "Test API",
         description: "User API Information",
+        
         contact: {
           name: "Anh Pham"
         },
-        servers: ["http://localhost:3000"]
+        servers: ["http://localhost:3000"],
+        
       },
-      components: {
-        securitySchemes: {
-          bearerAuth: {
-            type: 'http',
-            scheme: 'bearer',
-            bearerFormat: 'JWT',
-            in : 'header'
-          }
-        }
+      securityDefinitions: {
+        JWT: {
+          type: 'apiKey',
+          description: 'JWT authorization of an API',
+          name: 'Authorization',
+          in: 'header',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          value: "Bearer <JWT>"
+        },
+        
       },
-      security: [{
-        bearerAuth: []
-      }]
+     
     },
     
     // ['.routes/*.js']
     apis: ["app.js"]
   };
 
-
   const swaggerDocs = swaggerJsdoc(swaggerOptions);
   app.use("/api-docs", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerDocs));
 
   /**
  * @swagger
- * /api/users?page=2&size=5:
+ * /api/users:
  *   get:  
+ *     security:
+ *       - JWT: []
  *     description: Get all users
  *     parameters:
- *       - in: header
- *         name: Authorization
- *         default: Bearer + your token
+ *       - in: query
+ *         name: page
  *         schema:
- *           type: string
- *           format: uuid
+ *            type : string
+ *         required: true
+ *       - in: query
+ *         name: size
+ *         schema:
+ *            type : string
  *         required: true
  *     responses:
  *       200:
@@ -156,7 +167,9 @@ const swaggerOptions = {
  */
 
 
-  
+
+
+
 const port = 3000;
 app.listen(port,()=>{
     console.log(`Server is running at ${port}`);

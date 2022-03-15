@@ -1,5 +1,6 @@
 import express from "express";
-
+import { QueryTypes } from "@sequelize/core";
+import database from "../config/database.js";
 import crypt from '../utils/crypt.js'
 import mailGun from 'mailgun-js'
 import userModel from '../models/users.model.js'
@@ -14,7 +15,7 @@ router.get('/', authenticateToken, async (req,res)=>{
         const size = req.query.size||5;
         const offset = (page-1)*size;
         const users= await userModel.findAllUser(size,offset);
-        return res.json({users: users.rows});
+        return res.json({users: users});
     } catch (error) {
         res.status(500).json({error : error.message})
     }
@@ -25,18 +26,22 @@ router.post('/register',async (req,res)=>{
   
     try {
         const user = req.body;
-        const newUser = await userModel.addNewUser(user);
-        console.log(newUser);
-        const data = {
-            from: 'Anh Pham HCMUS@fit.com',
-            to: newUser.user_email,
-            subject: 'Comfirm your mail',
-            text: 'From MeU solutions \n'
-                    +`Verify your mail here http://localhost:3000/api/users/verify/${newUser.user_id}`
-                    +'\n Thank for your joining'
-          };    
-        mailgun.messages().send(data);
-        res.json({message:"Please comfirm your mail"});
+        await userModel.addNewUser(user);
+        const userByEmail = await userModel.findUserByEmail(user.email);
+        console.log(userByEmail);
+        if(userByEmail.length!=0){
+            const data = {
+                from: 'Anh Pham HCMUS@fit.com',
+                to: 'npham4533@gmail.com',
+                subject: 'Comfirm your mail',
+                text: 'From MeU solutions \n'
+                        +`Verify your mail here http://localhost:3000/api/users/verify/${userByEmail[0].id}`
+                        +'\n Thank for your joining'
+              };    
+            mailgun.messages().send(data);
+            res.json({message:"Please comfirm your mail"});
+        }else res.send('Sign up fail')
+        
     } catch (error) {
          console.log(error.message);
         res.status(500).json({error : error.message}) 
@@ -44,20 +49,20 @@ router.post('/register',async (req,res)=>{
 })
 
 router.get('/verify/:user_id',async (req,res)=>{
-    const user_id = req.params.user_id||-1;
-    console.log(user_id);
+    const id = req.params.user_id||-1;
+    
     try {
-        if(user_id===-1){
+        if(id===-1){
             return res.json({message:"Invalid url"});
         }
         
-        const user = await  userModel.findUserById(user_id);
-        console.log(user[0].user_verified);
+        const user = await  userModel.findUserById(id);
+        console.log(user);
         if(user.length===0){
             return res.json({message:"User does not exist"});
-        } else  if (user[0].user_verified==='0'){
+        } else  if (user[0].verified==='0'){
             
-            const setUser = await userModel.activeUser(user_id);
+            const setUser = await userModel.activeUser(id);
             return res.json({message:'Verify Success'});
         }
         else 
@@ -67,4 +72,5 @@ router.get('/verify/:user_id',async (req,res)=>{
     }
     
 })
+
 export default router;
