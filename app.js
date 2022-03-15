@@ -9,8 +9,7 @@ import morgan from 'morgan';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 
-import Users from './models/generate.model.js';
-import usersModel from './models/users.model.js';
+
 
 const app = express();
 app.use(express.json())

@@ -1,6 +1,4 @@
 import express from "express";
-import { QueryTypes } from "@sequelize/core";
-import database from "../config/database.js";
 import crypt from '../utils/crypt.js'
 import mailGun from 'mailgun-js'
 import userModel from '../models/users.model.js'
@@ -26,21 +24,24 @@ router.post('/register',async (req,res)=>{
   
     try {
         const user = req.body;
-        await userModel.addNewUser(user);
-        const userByEmail = await userModel.findUserByEmail(user.email);
-        console.log(userByEmail);
-        if(userByEmail.length!=0){
+        
+        let userByEmail = await userModel.findUserByEmail(user.email);
+        
+        if(userByEmail.length==0){
+            await userModel.addNewUser(user);
+            const newUser = await userModel.findUserByEmail(user.email);
+            await userModel.addNewRole(newUser[0].id,'Normal')
             const data = {
                 from: 'Anh Pham HCMUS@fit.com',
                 to: 'npham4533@gmail.com',
                 subject: 'Comfirm your mail',
                 text: 'From MeU solutions \n'
-                        +`Verify your mail here http://localhost:3000/api/users/verify/${userByEmail[0].id}`
+                        +`Verify your mail here http://localhost:3000/api/users/verify/${newUser[0].id}`
                         +'\n Thank for your joining'
               };    
             mailgun.messages().send(data);
             res.json({message:"Please comfirm your mail"});
-        }else res.send('Sign up fail')
+        }else res.send('Email has already exist')
         
     } catch (error) {
          console.log(error.message);
@@ -57,7 +58,7 @@ router.get('/verify/:user_id',async (req,res)=>{
         }
         
         const user = await  userModel.findUserById(id);
-        console.log(user);
+        
         if(user.length===0){
             return res.json({message:"User does not exist"});
         } else  if (user[0].verified==='0'){
