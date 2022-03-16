@@ -33,9 +33,7 @@ const Users = database.define('user_tables', {
     defaultValue:0
   }
 });
-Users.sync().then(() => {
-  console.log('table created');
-});
+
 
 
 

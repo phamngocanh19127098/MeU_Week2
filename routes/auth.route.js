@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt'
 
 
 import router from "./users.route.js";
-import usersModel from "../models/users.model.js";
 import { jwtTokens } from "../utils/jwt-heplers.js";
 
 
@@ -13,7 +12,11 @@ router.post('/login',async (req,res)=>{
 
     try {
         const {email,password} = req.body;
-        const users = await usersModel.findUserByEmail(email);
+        const users =  await User_tables.findAll({
+            where:{
+                email:email,
+            }
+        });
         
         if(users.length===0){
             return res.status(401).json({error:"Email or password is incorrect"});

@@ -3,7 +3,7 @@ import {Sequelize} from 'sequelize';
 export default new Sequelize('meuweek2_database', 'postgres', '123', {
     host: 'localhost',
     dialect: 'postgres',
-    operatorsAliases: false,
+   
 
     pool: {
       max: 5,
