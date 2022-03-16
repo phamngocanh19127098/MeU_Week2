@@ -24,9 +24,7 @@ router.post('/register',async (req,res)=>{
   
     try {
         const user = req.body;
-        
         let userByEmail = await userModel.findUserByEmail(user.email);
-        
         if(userByEmail.length==0){
             await userModel.addNewUser(user);
             const newUser = await userModel.findUserByEmail(user.email);
@@ -51,12 +49,10 @@ router.post('/register',async (req,res)=>{
 
 router.get('/verify/:user_id',async (req,res)=>{
     const id = req.params.user_id||-1;
-    
     try {
         if(id===-1){
             return res.json({message:"Invalid url"});
         }
-        
         const user = await  userModel.findUserById(id);
         
         if(user.length===0){
