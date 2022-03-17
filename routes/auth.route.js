@@ -5,14 +5,15 @@ import bcrypt from 'bcrypt'
 
 import router from "./users.route.js";
 import { jwtTokens } from "../utils/jwt-heplers.js";
+import database from '../config/database.js'
+import initModels from '../models/init-models.js'
 
-
-
+const models = initModels(database);
 router.post('/login',async (req,res)=>{
 
     try {
         const {email,password} = req.body;
-        const users =  await User_tables.findAll({
+        const users =  await models.userTable.findAll({
             where:{
                 email:email,
             }

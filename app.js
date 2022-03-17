@@ -11,6 +11,24 @@ import swaggerUiExpress from 'swagger-ui-express';
 import sequelizeAuto from 'sequelize-auto'
 import database from './config/database.js';
 
+
+const auto = new sequelizeAuto('meuweek2_database', 'postgres', '123',{
+  lang:'esm',
+  host: 'localhost',
+  dialect: 'postgres',
+  caseModel: 'c', 
+  caseFile: 'c', 
+  singularize: true, 
+  additional: {
+      timestamps: false
+      
+  },
+  tables: ['user_tables', 'user_roles'],
+  
+  
+ });
+auto.run();
+
 const app = express();
 app.use(express.json())
 app.use(morgan('dev'));
@@ -167,23 +185,7 @@ const swaggerOptions = {
 
 
    
-   const auto = new sequelizeAuto('meuweek2_database', 'postgres', '123',{
-    lang:'esm',
-    host: 'localhost',
-    dialect: 'postgres',
-    caseModel: 'c', 
-    caseFile: 'c', 
-    singularize: true, 
-    additional: {
-        timestamps: false
-        
-    },
-    tables: ['user_tables', 'user_roles'],
-    
-    
-   });
-  auto.run();
- 
+   
 
 
 const port = 3000;
