@@ -2,7 +2,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE DATABASE meuweek2_database;
 
 
---c\ into MeUWeek2_database
+--c\ meuweek2_database
 
 CREATE TABLE user_tables(
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
