@@ -21,7 +21,12 @@ router.get('/', authenticateToken, async (req,res)=>{
         const size = req.query.size||5;
         const offset = (page-1)*size;
         const users= await models.userTable.findAll({offset: offset, limit: size});
-        return res.json({users: users});
+      
+        for(var i = 0 ;i<users.length;i++){
+            delete users[i].dataValues.password;
+        }
+        
+        return res.json(users);
     } catch (error) {
         res.status(500).json({error : error.message})
     }

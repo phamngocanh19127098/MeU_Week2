@@ -9,7 +9,8 @@ CREATE TABLE user_tables(
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    verified TEXT DEFAULT 0
+    verified TEXT DEFAULT 0.
+   
 );
 
 
@@ -17,11 +18,11 @@ CREATE TABLE user_tables(
 CREATE TABLE user_roles(
     id uuid PRIMARY KEY,
     role TEXT NOT NULL,
-    
+   
     CONSTRAINT fk_user_userrole
       FOREIGN KEY(id) 
 	  REFERENCES user_tables(id)
-
+    
 );
 -- DROP TABLE user_roles;
 -- DROP TABLE users;
