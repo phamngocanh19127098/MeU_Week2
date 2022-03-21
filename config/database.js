@@ -1,8 +1,10 @@
 import {Sequelize} from 'sequelize';
+import dotenv from 'dotenv'
+dotenv.config();
 
-export default new Sequelize('meuweek2_database', 'postgres', '123', {
-    host: 'localhost',
-    dialect: 'postgres',
+export default new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
+    host: process.env.DATABASE_HOST,
+    dialect: process.env.DATABASE_DIALECT,
    
 
     pool: {

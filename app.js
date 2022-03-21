@@ -3,24 +3,16 @@ import {dirname} from 'path';
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import dotenv from 'dotenv';
-import userRoute from './routes/users.route.js'
-import authRoute from './routes/auth.route.js'
-import morgan from 'morgan';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
-
-
-
-
-
+import cookieParser from 'cookie-parser';
+import activeRoute from './middlewares/route.mdw.js'
 const app = express();
 app.use(express.json())
-app.use(morgan('dev'));
+app.use(cookieParser())
 dotenv.config();
 
-app.use('/api/users',userRoute);
-app.use('/api/auth',authRoute);
-
+activeRoute(app);
 
 // Swagger
 const swaggerOptions = {

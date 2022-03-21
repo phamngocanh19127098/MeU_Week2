@@ -25,4 +25,4 @@ CREATE TABLE user_roles(
     
 );
 -- DROP TABLE user_roles;
--- DROP TABLE users;
+-- DROP TABLE user_tables;
