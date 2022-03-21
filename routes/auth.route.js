@@ -3,12 +3,18 @@ import bcrypt from "bcrypt";
 import router from "./users.route.js";
 import { jwtTokens } from "../utils/jwt-heplers.js";
 import model from "../models/users.model.js";
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const users = await model.findUserByEmail(email);
-
+    /*	#swagger.parameters['body'] = {
+            in: 'body',
+            description: 'Provide email and password to get access tokens and refresh tokens',
+            required: true,
+            
+    } */
+  
     if (users.length === 0) {
       return res.status(401).json({ error: "Email or password is incorrect" });
     }
@@ -17,28 +23,41 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: "Email or password is incorrect" });
 
     const tokens = jwtTokens(users[0]);
-    res.cookie('refresh_token',tokens.refreshToken,{httpOnly:true})
+    res.cookie("refresh_token", tokens.refreshToken, { httpOnly: true });
     res.json(tokens);
     return res.status(200).json("Success");
   } catch (error) {}
 });
-router.get('/refresh_token',(req,res)=>{
+router.get("/refresh_token", (req, res) => {
+  // #swagger.description = 'Refresh access tokens'
   try {
-    const refreshToken=req.cookies.refresh_token;
-    if(refreshToken===null){
-      res.status(401).json( {error:'No refresh token'})
+    const refreshToken = req.cookies.refresh_token;
+    
+    if (typeof(refreshToken) === 'undefined') {
+      return res.status(401).json({ error: "No refresh token" });
     }
-    jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET,(error,user)=>{
-      if(error)
-        return res.status(403).json({error:error.messate})
-      let tokens = jwtTokens(user);
-      res.cookie('refresh_token',tokens.refreshToken,{httpOnly:true});
-      res.json(tokens);
-
-    })
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      (error, user) => {
+        if (error) return res.status(403).json({ error: error.message });
+        let tokens = jwtTokens(user);
+        res.cookie("refresh_token", tokens.refreshToken, { httpOnly: true });
+        return res.json(tokens);
+      }
+    );
   } catch (error) {
-    return res.status(403).json({error:error.messate})
+    return res.status(403).json({ error: error.message });
   }
-})
+});
 
+router.delete("/refresh_token", (req, res) => {
+   // #swagger.description = 'Delete refresh token from cookie'
+  try {
+    res.clearCookie("refresh_token");
+    return res.status(200).json({ message: "refresh token deleted" });
+  } catch (error) {
+    return res.status(401).json({ error: error.message });
+  }
+});
 export default router;

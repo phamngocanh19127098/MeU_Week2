@@ -5,8 +5,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node models.js && nodemon app.js ",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node models.js && nodemon --experimental-json-modules app.js ",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "swagger-autogen": "node --experimental-json-modules swagger.js"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +31,7 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.17.0",
     "sequelize-auto": "^0.8.8",
+    "swagger-autogen": "^2.20.3",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0"
   },
