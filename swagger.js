@@ -7,6 +7,18 @@ const doc = {
     },
     host: 'localhost:3000',
     schemes: ['http'],
+    securityDefinitions: {
+      bearerAuth: {
+        type: 'apiKey',
+        description: 'JWT authorization of an API',
+        name: 'Authorization',
+        in: 'header',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        value: "Bearer <JWT>"
+      },
+      
+    },
   };
   const outputFile = './swagger-output.json';
   const endpointsFiles = ['./middlewares/route.mdw.js'];

@@ -10,10 +10,21 @@
   "schemes": [
     "http"
   ],
+  "securityDefinitions": {
+    "bearerAuth": {
+      "type": "apiKey",
+      "description": "JWT authorization of an API",
+      "name": "Authorization",
+      "in": "header",
+      "scheme": "bearer",
+      "bearerFormat": "JWT",
+      "value": "Bearer <JWT>"
+    }
+  },
   "paths": {
     "/api/users/": {
       "get": {
-        "description": "Get all users",
+        "description": "Get all users (Bearer+space+access token to authorize)",
         "parameters": [
           {
             "name": "page",
@@ -44,7 +55,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/users/register": {
@@ -130,10 +146,17 @@
         }
       }
     },
-    "/api/auth/refresh_token": {
-      "get": {
+    "/api/auth/refresh_token/{token}": {
+      "post": {
         "description": "Refresh access tokens",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -145,7 +168,9 @@
             "description": "Forbidden"
           }
         }
-      },
+      }
+    },
+    "/api/auth/refresh_token": {
       "delete": {
         "description": "Delete refresh token from cookie",
         "parameters": [],

@@ -6,7 +6,7 @@ import nodemailer from "nodemailer";
 dotenv.config();
 const router = express.Router();
 import bcrypt from "bcrypt";
-import model from "../models/users.model.js";
+import model from "../provider/users.model.js";
 
 let transporter = nodemailer.createTransport({
   service: "gmail",
@@ -17,7 +17,10 @@ let transporter = nodemailer.createTransport({
 });
 
 router.get("/", authenticateToken, async (req, res) => {
-    // #swagger.description = 'Get all users'
+    // #swagger.description = 'Get all users (Bearer+space+access token to authorize)'
+    /* #swagger.security = [{
+              "bearerAuth": []
+        }] */
   try {
 
     const page = req.query.page || 1;
