@@ -15,11 +15,8 @@ dotenv.config();
 activeRoute(app);
 
 
-
 app.use("/doc", swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerFile));
 
-
-   
 
 const port = 3000;
 app.listen(port,()=>{

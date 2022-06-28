@@ -14,7 +14,7 @@ const auto = new sequelizeAuto(process.env.DATABASE_NAME, process.env.DATABASE_U
         timestamps: false
         
     },
-    tables: ['user_tables', 'user_roles'],
+    tables: ['users', 'products','orders','order_details'],
     
     
    });

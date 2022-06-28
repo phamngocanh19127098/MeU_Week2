@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 
-function jwtTokens({ user_id, user_name, user_email }) {
-  const user = { user_id, user_name, user_email };
+function jwtTokens({ login_name, password, role_name, id }) {
+  const user = { login_name, password, role_name, id };
   let accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "2m",
+    expiresIn: "2h",
   });
   let refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "10m",
+    expiresIn: "5h",
   });
   accessToken = "Bearer " +accessToken;
   refreshToken = "Bearer "+refreshToken;
