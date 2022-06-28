@@ -1,9 +1,15 @@
 Huớng dẫn chạy source:
+
 Run source sql
+
 chạy lệnh npm install
+
 chạy lênh npm run start
+
 truy cập swagger vào http://localhost:3000/doc 
+
 Note : ví dụ request body của tạo hóa đơn
+
 {
 "total_price": "100",
 "productList": [
@@ -13,5 +19,7 @@ Note : ví dụ request body của tạo hóa đơn
 }
 ]
 }
+
 Duy nhất API này swagger nó không render được example
+
 mọi API khác đã có example trên swagger
