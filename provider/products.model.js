@@ -40,6 +40,15 @@ export default {
                 id,
             }
         })
-    }
+    },
 
+    async delete(id, userId){
+        await models.product.destroy({
+            where:{
+                id,
+                user_id : userId,
+            }
+        });
+    }
 }
+

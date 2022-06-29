@@ -1,5 +1,8 @@
 import initModels from "../models/init-models.js";
 import database from "../config/database.js";
+import product from "../models/product.js";
+import orderDetail from "../models/orderDetail.js";
+import order from "../models/order.js";
 const models = initModels(database);
 export default {
     async findAllUser(offset, size){
@@ -29,4 +32,35 @@ export default {
             password:user.password
         });
     },
+
+    async manage(){
+        let data = await models.user.findAll({
+            where:{
+                role_name : 'Shop'
+            },
+            include:[
+                {
+                    model: product,
+                    as : 'products',
+                    attributes: ['price', 'image_url'],
+                    include : [
+                        {
+                            model: orderDetail,
+                            as : 'order_details',
+                            attributes : ['quantity'],
+                            include : [
+                                {
+                                    model: order,
+                                    as : 'order',
+                                    attributes : ['total_price','time']
+                                }
+                            ]
+
+                        },
+                    ]
+                },
+            ]
+        })
+        return data;
+    }
 }

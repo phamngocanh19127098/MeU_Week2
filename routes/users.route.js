@@ -64,4 +64,25 @@ router.post('/add-user',authenticateToken ,async (req, res)=>{
       })
 })
 
+router.get('/list-shop',authenticateToken, async (req,res)=>{
+    /* #swagger.security = [{
+           "bearerAuth": []
+     }] */
+    if(!req.user.role_name|| req.user.role_name !== 'Admin'){
+        return res.status(500).json({
+            statusCode : 500,
+            message : 'Người dùng không có quyền tạo người dùng mới.'
+        })
+
+    }
+    let data = await model.manage();
+    return res.status(200).json({
+        statusCode: 200,
+        message: 'Lấy danh sách shop thành công.',
+        data,
+    })
+
+
+})
+
 export default router;

@@ -80,4 +80,33 @@ router.put('/',authenticateToken, async (req, res)=>{
                 })
         }
 })
+
+router.delete('/:id',authenticateToken, async (req, res)=>{
+        /* #swagger.security = [{
+                          "bearerAuth": []
+                    }] */
+        let role_name = req.user.role_name;
+        if(role_name !=='Shop' ){
+                return res.status(401).json({
+                        statusCode: 401,
+                        message:"Nguời dùng không có chỉnh sửa sản phẩm."
+                })
+        }
+        let id = req.params.id;
+        try {
+                await model.delete(id, req.user.id);
+        }
+        catch (e) {
+                return res.status(500).json({
+                        statusCode: 500,
+                        message : "Không thể xóa sản phẩm đang tồn tại trong đơn hàng."
+                })
+        }
+
+        return res.status(200).json({
+                statusCode: 200,
+                message: "Xoá thành công."
+        })
+
+})
 export default router;
